@@ -3,19 +3,20 @@ import uvicorn
 from sqlalchemy.orm import Session
 
 from password_manager.password import crud, models, schemas
-from database import engine, SessionLocal
+from password_manager.database.database import get_db
+from password_manager.database.database import engine, SessionLocal
 
-models.Base.metadata.create_all(bind=engine)
+# models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
 
-def get_db() -> SessionLocal:
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+# def get_db() -> SessionLocal:
+#     db = SessionLocal()
+#     try:
+#         yield db
+#     finally:
+#         db.close()
 
 
 @app.post("/passwords/", response_model=schemas.Password)
@@ -27,7 +28,7 @@ def create_password_entry(password: schemas.PasswordBase, db: Session = Depends(
     return db_password
 
 
-@app.patch("/passwords/{password_id}", response_model=schemas.Password)
+@app.put("/passwords/{password_id}", response_model=schemas.Password)
 def patch_password_entry(password_id: int, password: schemas.PasswordBase, db: Session = Depends(get_db)):
     update_data = password.model_dump(exclude_unset=True)
     updated_entry = crud.update_password(db, password_id, update_data)
