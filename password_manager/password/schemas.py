@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from datetime import datetime
 
 
 class PasswordBase(BaseModel):
@@ -17,7 +16,6 @@ class PasswordCreate(PasswordBase):
 
 class Password(PasswordCreate):
     id: int
-    # password_id: int
 
     class Config:
         orm_mode = True

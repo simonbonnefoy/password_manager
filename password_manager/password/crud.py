@@ -2,15 +2,15 @@ from datetime import datetime
 
 from sqlalchemy.orm import Session
 from sqlalchemy import update
-from fastapi import Depends, FastAPI, HTTPException
 from password_manager.password import models, schemas
-from password_manager.database.database import engine, SessionLocal
-
 
 
 def get_passwords(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Password).offset(skip).limit(limit).all()
 
+
+def get_passwords(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Password).offset(skip).limit(limit).all()
 
 
 def get_password(db: Session, title: str):
@@ -45,17 +45,3 @@ def create_password_entry(db: Session, password: schemas.PasswordCreate):
     db.refresh(db_password)
     return db_password
 
-# def get_user_by_email(db: Session, email: str):
-#     return db.query(models.User).filter(models.User.email == email).first()
-#
-#
-# def get_users(db: Session, skip: int = 0, limit: int = 100):
-#     return db.query(models.User).offset(skip).limit(limit).all()
-
-# def create_user(db: Session, user: schemas.UserCreate):
-#     fake_hashed_password = user.password + "notreallyhashed"
-#     db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
-#     db.add(db_user)
-#     db.commit()
-#     db.refresh(db_user)
-#     return db_user

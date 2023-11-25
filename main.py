@@ -2,21 +2,10 @@ from fastapi import Depends, FastAPI, HTTPException
 import uvicorn
 from sqlalchemy.orm import Session
 
-from password_manager.password import crud, models, schemas
+from password_manager.password import crud, schemas
 from password_manager.database.database import get_db
-from password_manager.database.database import engine, SessionLocal
-
-# models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-
-
-# def get_db() -> SessionLocal:
-#     db = SessionLocal()
-#     try:
-#         yield db
-#     finally:
-#         db.close()
 
 
 @app.post("/passwords/", response_model=schemas.Password)
